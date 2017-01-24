@@ -20,8 +20,9 @@ public class Expression {
     }
 
     private Double calculateResult() {
-        Parser parser=new Parser();
-        String []params={expression};
-        return (Parser.eval(expression));
+        Parser parser = new Parser();
+        String[] param = {expression};
+
+        return (parser.run(param));
     }
 }

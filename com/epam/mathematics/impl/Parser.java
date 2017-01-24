@@ -11,19 +11,7 @@ import java.util.LinkedList;
 public class Parser implements Operation<Double, String> {
     @Override
     public Double run(String[] args) {
-        return null;
-    }
-
-    static boolean isDelim(char c) {
-        return c == ' ';
-    }
-
-    static boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^';
-    }
-
-
-    public static Double eval(String s) {
+        String s=" "+args[0];
         LinkedList<Double> st = new LinkedList<Double>();
         LinkedList<Character> op = new LinkedList<Character>();
         Priority priority = new Priority();
@@ -49,6 +37,15 @@ public class Parser implements Operation<Double, String> {
                         st.add(result.run(params));
                     }
                 }
+                if(c=='-'&&!Character.isDigit(s.charAt(i-1))&&s.charAt(i-1)!=')'){
+                    String operand = "-";
+                    i++;
+                    while (i < s.length() && Character.isDigit(s.charAt(i)))
+                        operand += s.charAt(i++);
+                    --i;
+                    st.add(Double.parseDouble(operand));
+                    continue;
+                }
                 op.add(c);
             } else {
                 String operand = "";
@@ -63,5 +60,13 @@ public class Parser implements Operation<Double, String> {
             st.add(result.run(params));
         }
         return st.get(0);
+    }
+
+    static boolean isDelim(char c) {
+        return c == ' ';
+    }
+
+    static boolean isOperator(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^';
     }
 }

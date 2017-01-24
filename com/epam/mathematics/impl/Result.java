@@ -8,8 +8,8 @@ import com.epam.mathematics.Operation;
 public class Result implements Operation<Double, String> {
     @Override
     public Double run(String[] args) {
-        Double first = Double.parseDouble(args[0]);
-        Double second = Double.parseDouble(args[1]);
+        Double second = Double.parseDouble(args[0]);
+        Double first = Double.parseDouble(args[1]);
         Character operation = args[2].charAt(0);
 
         switch (operation) {
@@ -26,7 +26,6 @@ public class Result implements Operation<Double, String> {
                     return first / second;
                 } else {
                     throw new ArithmeticException("Divided by zero");
-
                 }
             case '^':
                 return Math.pow(first, second);
