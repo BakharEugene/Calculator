@@ -10,7 +10,6 @@ public class Reader implements Readable {
      public String read() {
         Scanner scanner = new Scanner(System.in);
         String expression = scanner.nextLine();
-
         return expression;
     }
 }

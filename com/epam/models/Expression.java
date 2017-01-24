@@ -22,6 +22,6 @@ public class Expression {
     private Double calculateResult() {
         Parser parser=new Parser();
         String []params={expression};
-        return parser.run(params);
+        return (Parser.eval(expression));
     }
 }

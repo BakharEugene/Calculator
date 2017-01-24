@@ -22,7 +22,7 @@ public class Priority implements Operation<Byte, Character> {
             case '^':
                 return 3;
             default:
-                return 4;
+                return -1;
         }
     }
 }

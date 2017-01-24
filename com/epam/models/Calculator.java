@@ -9,10 +9,16 @@ import com.epam.console.output.Writer;
 public class Calculator {
     public void run() {
         Reader reader = new Reader();
-        String expr = reader.read();
-        Expression expression = new Expression(expr);
-        Writer writer=new Writer();
-        writer.writeResult(expression.getResult().toString());
+        Writer writer = new Writer();
+        writer.welcomeMessage();
+        String expr = "";
+        while (expr != "Q") {
+            System.out.println("New expression: ");
+            expr = reader.read();
+            Expression expression = new Expression(expr);
+
+            writer.writeResult(expression.getResult().toString());
+        }
     }
 
 }

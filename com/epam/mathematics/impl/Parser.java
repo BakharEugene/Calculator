@@ -1,6 +1,7 @@
 package com.epam.mathematics.impl;
 
 import com.epam.mathematics.Operation;
+import com.sun.javafx.image.IntPixelGetter;
 
 import java.util.LinkedList;
 
@@ -10,50 +11,57 @@ import java.util.LinkedList;
 public class Parser implements Operation<Double, String> {
     @Override
     public Double run(String[] args) {
-        LinkedList<Double> st = new LinkedList<>(); // сюда наваливают цифры
-        LinkedList<String> op = new LinkedList<>(); // сюда опрераторы и st и op в порядке поступления
-        Result result = new Result();
+        return null;
+    }
+
+    static boolean isDelim(char c) {
+        return c == ' ';
+    }
+
+    static boolean isOperator(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^';
+    }
+
+
+    public static Double eval(String s) {
+        LinkedList<Double> st = new LinkedList<Double>();
+        LinkedList<Character> op = new LinkedList<Character>();
         Priority priority = new Priority();
-        for (int i = 0; i < args[0].length(); i++) { // парсим строку с выражением и вычисляем
-            char c = args[0].charAt(i);
+        Result result = new Result();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (isDelim(c))
+                continue;
             if (c == '(')
-                op.add("(");
+                op.add('(');
             else if (c == ')') {
-                while (op.getLast() != "(") {
-
-                }
-                op.removeLast();
-
-            } else if (isOperator(c)) {
-                Character[] parametrs = {c};
-                Character[] secondParametrs = {c};
-                while (!op.isEmpty() && priority.run(parametrs) >= priority.run(secondParametrs)) {
-                    String[] params = {(st.get(st.size() - 1)).toString(), (st.get(st.size() - 2)).toString(), op.removeLast()};
-
-                    st.removeLast();
-                    st.removeLast();
+                while (op.getLast() != '(') {
+                    String[] params = {st.removeLast().toString(), st.removeLast().toString(), op.removeLast().toString()};
                     st.add(result.run(params));
                 }
-                op.add(secondParametrs[0].toString());
+                op.removeLast();
+            } else if (isOperator(c)) {
+                if (!op.isEmpty()) {
+                    Character[] firstParam = {op.getLast()};
+                    Character[] secondParam = {c};
+                    while (!op.isEmpty() && priority.run(firstParam) >= priority.run(secondParam)) {
+                        String[] params = {st.removeLast().toString(), st.removeLast().toString(), op.removeLast().toString()};
+                        st.add(result.run(params));
+                    }
+                }
+                op.add(c);
             } else {
                 String operand = "";
-                while (i < args[0].length() && Character.isDigit(args[0].charAt(i)))
-                    operand += args[0].charAt(i++);
+                while (i < s.length() && Character.isDigit(s.charAt(i)))
+                    operand += s.charAt(i++);
                 --i;
                 st.add(Double.parseDouble(operand));
             }
         }
         while (!op.isEmpty()) {
-            String[] params = {(st.get(st.size() - 1)).toString(), (st.get(st.size() - 2)).toString(), op.removeLast()};
-            st.removeLast();
-            st.removeLast();
+            String[] params = {st.removeLast().toString(), st.removeLast().toString(), op.removeLast().toString()};
             st.add(result.run(params));
         }
-        return st.get(0);  // возврат результата
-    }
-
-
-    private boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^';
+        return st.get(0);
     }
 }
