@@ -40,7 +40,7 @@ public class Parser implements Operation<Double, String> {
                 if(c=='-'&&!Character.isDigit(s.charAt(i-1))&&s.charAt(i-1)!=')'){
                     String operand = "-";
                     i++;
-                    while (i < s.length() && Character.isDigit(s.charAt(i)))
+                    while (i < s.length() &&(Character.isDigit(s.charAt(i))||s.charAt(i)=='.'))
                         operand += s.charAt(i++);
                     --i;
                     st.add(Double.parseDouble(operand));
@@ -49,7 +49,7 @@ public class Parser implements Operation<Double, String> {
                 op.add(c);
             } else {
                 String operand = "";
-                while (i < s.length() && Character.isDigit(s.charAt(i)))
+                while (i < s.length() && (Character.isDigit(s.charAt(i))||s.charAt(i)=='.'))
                     operand += s.charAt(i++);
                 --i;
                 st.add(Double.parseDouble(operand));
